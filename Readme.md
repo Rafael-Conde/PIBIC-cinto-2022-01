@@ -11,6 +11,7 @@ o que comprar:
 
 - Estudamos o funcionamento do MPU6050, encontrando um [guia rápido](https://lastminuteengineers.com/mpu6050-accel-gyro-arduino-tutorial/) sobre como ele funciona e o que ele mede
 - medimos o furo do arduino - 3,2mm
+- descobrimos que a função getGyroX() e similares mede a variação dos angulos.
 
 ## próxima reunião
 
