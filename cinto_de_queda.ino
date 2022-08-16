@@ -85,7 +85,7 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy) {
   // Variáveis locais
   float gyroxAbs, gyroyAbs, gyrozAbs;
 
-  float MovimentoBrusco = 300;
+  float MovimentoBrusco = 500;
   int direitax = -20, direitay = 60;
   int esquerdax = 25, esquerday = 60;
   int frente = 120, tras = 40;

@@ -1,19 +1,13 @@
-# 08/08/2022
-
-## discussões
-
-o que comprar:
-  - bateria
-
-
+# 15/08/2022
 
 ## Ata da Reunião
 
-- Estudamos o funcionamento do MPU6050, encontrando um [guia rápido](https://lastminuteengineers.com/mpu6050-accel-gyro-arduino-tutorial/) sobre como ele funciona e o que ele mede
-- medimos o furo do arduino - 3,2mm
-- descobrimos que a função getGyroX() e similares mede a variação dos angulos.
+- Testamos o cinto com a bateria:
+  - muito sensívelm apita por qualquer coisa
+  - hipótese: a biblioteca do acelerômetro calcula os angulos com base na aceleração angular(giroscópio) e devido a isso, os angulos mudam mesmo enquanto o sensor está parado.
+  - implementar uma sensibilidade a impacto?
 
 ## próxima reunião
 
-- comprar uma bateria
-- testar o sensor 
+- testar o cinto novamente com outras bibliotecas do MPU6050
+- fixar o arduino na caixa impressa.
