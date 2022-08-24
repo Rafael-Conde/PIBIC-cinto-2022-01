@@ -65,7 +65,7 @@ void loop() {
   gyrox = mpu6050.getGyroX();
   gyroy = mpu6050.getGyroY();
   gyroz = mpu6050.getGyroZ();
-  
+
   angx = mpu6050.getAngleX();
   angy = mpu6050.getAngleY();
 
@@ -73,19 +73,16 @@ void loop() {
   double accelx = mpu6050.getAccX();
   double accely = mpu6050.getAccY();
   double accelz = mpu6050.getAccZ();
-  Serial.print("maxima = ");
 
-  resultante = sqrt(pow(accelx, 2.0) + pow(accely, 2.0) + pow(accelz, 2.0));
-  if ( resultante > aux )
-  {
-    aux = resultante;
-  }
-  Serial.println(aux);
+
+
+
   // Chamada da função de detecção de queda
   queda(gyrox, gyroy, gyroz, angx, angy, accelx, accely, accelz);
 
 };
-
+double accel_resultante{0};
+bool aviso_movimento{false};
 // Detecção de queda
 void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, double accelx, double accely, double accelz) {
   // Variáveis locais
@@ -132,9 +129,15 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, dou
     aviso2 = false;
   };
   // código para avaliação de impacto
-  
+  bool aviso3{false};
   // calcula a aceleração resultante das 3 direções
   accel_resultante = sqrt(pow(accelx, 2.0) + pow(accely, 2.0) + pow(accelz, 2.0));
+  if (accel_resultante > aux)
+  {
+    aux = accel_resultante;
+  }
+  Serial.print("maxima = ");
+  Serial.println(aux);
   if (accel_resultante >= 2.0)
   {
     aviso3 = true;
@@ -143,9 +146,10 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, dou
   {
     aviso3 = false;
   }
-  
+  aviso_movimento = aviso1 || aviso3;
+  Serial.println(aviso_movimento);
   // Aviso
-  if ((aviso1 == true) && ( (aviso2 == true) || (aviso3 == true) ) ) {
+  if ( aviso2 && aviso_movimento ) {
     Serial.println("========================================================================> Perigo");
     digitalWrite(pinoLED, HIGH);
     som();
