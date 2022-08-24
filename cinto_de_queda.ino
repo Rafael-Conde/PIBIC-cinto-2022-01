@@ -137,7 +137,8 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, dou
     aux = accel_resultante;
   }
   Serial.print("maxima = ");
-  Serial.println(aux);
+  Serial.print(aux);
+  Serial.print("\t");
   if (accel_resultante >= 2.0)
   {
     aviso3 = true;
