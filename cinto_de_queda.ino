@@ -53,6 +53,12 @@ void setup() {
 
 };
 
+
+double aux{0};
+double resultante{0};
+
+
+
 void loop() {
   // Atualizando o módulo
   mpu6050.update();
@@ -67,21 +73,43 @@ void loop() {
 
   // Exibindo informações no serial
   //Serial.print("gyro. x, y, z:\t");
-  Serial.print(gyrox); Serial.print("\t");
-  Serial.print(gyroy); Serial.print("\t");
-  Serial.print(gyroz); Serial.println("\t");
+  //Serial.print(gyrox); Serial.print("\t");
+  //Serial.print(gyroy); Serial.print("\t");
+  //Serial.print(gyroz); Serial.println("\t");
 
-  Serial.print("ang. x, y:\t");
-  Serial.print(angx); Serial.print("\t");
-  Serial.print(angy); Serial.println("\t");
+  //Serial.print("ang. x, y:\t");
+  //Serial.print(angx); Serial.print("\t");
+  //Serial.print(angy); Serial.println("\t");
 
+
+
+
+  //lendo os valores de aceleração em cada eixo
+  double accelx = mpu6050.getAccX();
+  double accely = mpu6050.getAccY();
+  double accelz = mpu6050.getAccZ();
+  //Serial.print("accelx = ");
+  //Serial.print(accelx);
+  //Serial.print("\taccely = ");
+  //Serial.print(accely);
+  //Serial.print("\taccelz = ");
+  //Serial.println(accelz);
+
+  Serial.print("maxima = ");
+
+  resultante = sqrt(pow(accelx, 2.0) + pow(accely, 2.0) + pow(accelz, 2.0));
+  if ( resultante > aux )
+  {
+    aux = resultante;
+  }
+  Serial.println(aux);
   // Chamada da função de detecção de queda
-  queda(gyrox, gyroy, gyroz, angx, angy);
+  queda(gyrox, gyroy, gyroz, angx, angy, accelx, accely, accelz);
 
 };
 
 // Detecção de queda
-void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy) {
+void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, double accelx, double accely, double accelz) {
   // Variáveis locais
   float gyroxAbs, gyroyAbs, gyrozAbs;
 
@@ -125,9 +153,27 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy) {
   else {
     aviso2 = false;
   };
+  // código para avaliação de impacto
+  int accel_resultante = 0;
+  bool aviso3{false};
+  // calcula a aceleração resultante das 3 direções
+  accel_resultante = sqrt(pow(accelx, 2.0) + pow(accely, 2.0) + pow(accelz, 2.0));
+  if (accel_resultante >= 2.0)
+  {
+    aviso3 = true;
+  }
+  else
+  {
+    aviso3 = false;
+  }
+
+
+
+
+
 
   // Aviso
-  if ((aviso1 == true) && (aviso2 == true)) {
+  if ((aviso1 == true) && ( (aviso2 == true) || (aviso3 == true) ) ) {
     Serial.println("========================================================================> Perigo");
     digitalWrite(pinoLED, HIGH);
     som();
@@ -135,7 +181,8 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy) {
   }
   else {
     digitalWrite(pinoLED, LOW);
-  };
+  }
+
 };
 
 // Enviando SMS
