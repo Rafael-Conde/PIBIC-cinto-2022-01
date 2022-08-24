@@ -35,7 +35,6 @@ void setup() {
   delay(1000);
   digitalWrite(9, LOW);
   delay(5000);
-  //Serial.println("/n/r SIM900 ligado");
   digitalWrite(buzzer, HIGH);
   delay(1);//wait for 1ms
   digitalWrite(buzzer, LOW);
@@ -45,7 +44,6 @@ void setup() {
   SIM900.begin(taxaDeTransmissao);
   // Delay para fazer logon na rede
   delay(2000);
-  //Serial.println("Comunicação Arduino <-> SIM900, estabelecida");
   digitalWrite(buzzer, HIGH);
   delay(1);//wait for 1ms
   digitalWrite(buzzer, LOW);
@@ -67,34 +65,14 @@ void loop() {
   gyrox = mpu6050.getGyroX();
   gyroy = mpu6050.getGyroY();
   gyroz = mpu6050.getGyroZ();
-
+  
   angx = mpu6050.getAngleX();
   angy = mpu6050.getAngleY();
-
-  // Exibindo informações no serial
-  //Serial.print("gyro. x, y, z:\t");
-  //Serial.print(gyrox); Serial.print("\t");
-  //Serial.print(gyroy); Serial.print("\t");
-  //Serial.print(gyroz); Serial.println("\t");
-
-  //Serial.print("ang. x, y:\t");
-  //Serial.print(angx); Serial.print("\t");
-  //Serial.print(angy); Serial.println("\t");
-
-
-
 
   //lendo os valores de aceleração em cada eixo
   double accelx = mpu6050.getAccX();
   double accely = mpu6050.getAccY();
   double accelz = mpu6050.getAccZ();
-  //Serial.print("accelx = ");
-  //Serial.print(accelx);
-  //Serial.print("\taccely = ");
-  //Serial.print(accely);
-  //Serial.print("\taccelz = ");
-  //Serial.println(accelz);
-
   Serial.print("maxima = ");
 
   resultante = sqrt(pow(accelx, 2.0) + pow(accely, 2.0) + pow(accelz, 2.0));
@@ -154,8 +132,7 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, dou
     aviso2 = false;
   };
   // código para avaliação de impacto
-  int accel_resultante = 0;
-  bool aviso3{false};
+  
   // calcula a aceleração resultante das 3 direções
   accel_resultante = sqrt(pow(accelx, 2.0) + pow(accely, 2.0) + pow(accelz, 2.0));
   if (accel_resultante >= 2.0)
@@ -166,12 +143,7 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, dou
   {
     aviso3 = false;
   }
-
-
-
-
-
-
+  
   // Aviso
   if ((aviso1 == true) && ( (aviso2 == true) || (aviso3 == true) ) ) {
     Serial.println("========================================================================> Perigo");
@@ -200,7 +172,6 @@ void sms() {
   delay(100);
 
   // Finalizando o comando AT com um ^Z, código ASCII 26
-  //SIM900.println(char(26));
   SIM900.println((char)26);
   delay(100);
   SIM900.println();
