@@ -83,6 +83,7 @@ void loop() {
 };
 double accel_resultante{0};
 bool aviso_movimento{false};
+float gyro_aux{0};
 // Detecção de queda
 void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, double accelx, double accely, double accelz) {
   // Variáveis locais
@@ -102,6 +103,7 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, dou
 
   if ((gyroxAbs > MovimentoBrusco) || (gyroyAbs > MovimentoBrusco) || (gyrozAbs > MovimentoBrusco) ) {
     Serial.println("========================================================================> Movimento brusco ");
+    
     aviso1 = true;
   }
   else {
@@ -139,7 +141,18 @@ void queda (float gyrox, float gyroy, float  gyroz, float  angx, float angy, dou
   Serial.print("maxima = ");
   Serial.print(aux);
   Serial.print("\t");
-  if (accel_resultante >= 2.0)
+  gyro_aux = gyroxAbs;
+  if(gyroyAbs>gyro_aux)
+  {
+    gyro_aux = gyroyAbs;
+  }
+  if(gyrozAbs>gyro_aux)
+  {
+    gyro_aux = gyrozAbs;
+  }
+  Serial.print(gyro_aux);
+  Serial.print("\t");
+  if (accel_resultante >= 2.5)
   {
     aviso3 = true;
   }
